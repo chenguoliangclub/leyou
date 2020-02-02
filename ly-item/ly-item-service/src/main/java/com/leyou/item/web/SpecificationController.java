@@ -1,6 +1,7 @@
 package com.leyou.item.web;
 
 
+import com.leyou.item.pojo.SpecGroup;
 import com.leyou.item.pojo.SpecParam;
 import com.leyou.item.pojo.Specification;
 import com.leyou.item.service.SpecificationService;
@@ -16,7 +17,7 @@ public class SpecificationController {
     @Autowired
     private SpecificationService specificationService;
     @GetMapping("/groups/{cid}")
-    ResponseEntity<List<Specification>> querySpecificationByCid(@PathVariable("cid") Long cid){
+    ResponseEntity<List<SpecGroup>> querySpecificationByCid(@PathVariable("cid") Long cid){
         return ResponseEntity.ok(specificationService.querySpecificationByCid(cid));
     }
 
@@ -28,5 +29,11 @@ public class SpecificationController {
             @RequestParam(value="generic", required = false) Boolean generic
     ){
         return ResponseEntity.ok(specificationService.querySpecParams(gid, cid, searching, generic));
+    }
+
+    // 查询规格参数组，及组内参数
+    @GetMapping("{cid}")
+    public ResponseEntity<List<SpecGroup>> querySpecsByCid(@PathVariable("cid") Long cid){
+         return ResponseEntity.ok(specificationService.querySpecsByCid(cid));
     }
 }

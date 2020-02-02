@@ -95,4 +95,11 @@ public class GoodsService {
         }
         return skus;
     }
+    public Spu querySpuById(Long id){
+        Spu spu = spuMapper.selectByPrimaryKey(id);
+        if (spu == null){
+            throw new LyException(ExceptionEnum.GOODS_NOT_FOUND);
+        }
+        return spu;
+    }
 }

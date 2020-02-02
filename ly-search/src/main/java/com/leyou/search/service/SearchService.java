@@ -2,16 +2,26 @@ package com.leyou.search.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.leyou.common.utills.JsonUtils;
+import com.leyou.common.vo.PageResult;
 import com.leyou.item.pojo.*;
 import com.leyou.search.client.BrandClient;
 import com.leyou.search.client.CategoryClient;
 import com.leyou.search.client.GoodsClient;
 import com.leyou.search.client.SpecificationClient;
 import com.leyou.search.pojo.Goods;
+import com.leyou.search.pojo.SearchRequest;
 import com.leyou.search.repository.GoodsRepository;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.query.FetchSourceFilter;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.SourceFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -31,6 +41,9 @@ public class SearchService {
 
     @Autowired
     SpecificationClient specificationClient;
+
+    @Autowired
+    GoodsRepository goodsRepository;
 
     public Goods buildGoods(Spu spu){
         Goods good = new Goods();
@@ -108,5 +121,39 @@ public class SearchService {
             }
         }
         return result;
+    }
+
+    public PageResult<Goods> search(SearchRequest request){
+        String key = request.getKey();
+        int page = request.getPage() - 1;
+        System.out.println("page: " + page);
+        int size = request.getSize();
+        System.out.println("size: " + size);
+        NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();
+        //搜索字段
+        builder.withQuery(QueryBuilders.matchQuery("all",key));
+        //分页
+        builder.withPageable(PageRequest.of(page,size));
+        //过滤
+        builder.withSourceFilter(new FetchSourceFilter(new String[]{"id","skus","subTitle"}, null));
+        //搜素
+        Page<Goods> result = goodsRepository.search(builder.build());
+        //解析结果
+        long totalPages = result.getTotalPages();
+        long totalElements = result.getTotalElements();
+        List<Goods> goodsList = result.getContent();
+        return new PageResult<Goods>(totalElements,totalPages,goodsList);
+    }
+
+    public void createIndex(Long id){
+        Spu spu = this.goodsClient.querySpuById(id);
+        Goods goods = this.buildGoods(spu);
+        this.goodsRepository.save(goods);
+    }
+
+    public void deleteIndex(Long id){
+        Goods goods = new Goods();
+        goods.setId(id);
+        this.goodsRepository.delete(goods);
     }
 }

@@ -36,4 +36,9 @@ public class GoodsController {
     public ResponseEntity<List<Sku>> querySkuBySpuId(@RequestParam("id") Long id) {
         return ResponseEntity.ok(goodsService.querySkuBySpuId(id));
     }
+
+    @GetMapping("/spu/{id}")
+    public ResponseEntity<Spu> querySpuById(@PathVariable("id") Long id){
+        return ResponseEntity.ok(goodsService.querySpuById(id));
+    }
 }
