@@ -8,6 +8,9 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/ly-search/pom.xml" />
+        <option value="$PROJECT_DIR$/ly-item/ly-item-service/pom.xml" />
+        <option value="$PROJECT_DIR$/ly-item/ly-item-service/ly-sms/pom.xml" />
+        <option value="$PROJECT_DIR$/ly-order/pom.xml" />
       </list>
     </option>
   </component>

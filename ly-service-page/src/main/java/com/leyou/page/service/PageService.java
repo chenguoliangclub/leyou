@@ -17,10 +17,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 public class PageService {
@@ -44,18 +43,29 @@ public class PageService {
         Brand brand = brandClient.queryBrandById(spu.getBrandId());
         List<Category> categories = categoryClient.getCategoryListByIds(Arrays.asList(spu.getCid1(), spu.getCid2(), spu.getCid3()));
         List<SpecGroup> spec = specificationClient.querySpecsByCid(spu.getCid3());
+        // 规格参数id与name对
+        Map<Long,String> paramMap = new HashMap<>();
+        //查询规格参数并装到规格参数组中
+        spec.forEach(specGroup -> {
+            List<SpecParam> specParams = specificationClient.querySpecParamByGid(specGroup.getId());
+            specParams.forEach(specParam -> {
+                paramMap.put(specParam.getId(),specParam.getName());
+            });
+            specGroup.setParams(specParams);
+        });
         //- spu信息
         map.put("spu",spu);
         //- spu的详情
         map.put("spuDetail",spuDetail);
         //- spu下的所有sku
-        map.put("sku",skus);
+        map.put("skus",skus);
         //- 品牌
         map.put("brand",brand);
         //- 商品三级分类
         map.put("category",categories);
         //- 商品规格参数、规格参数组
         map.put("spec",spec);
+        map.put("paramMap",paramMap);
         return map;
     }
 

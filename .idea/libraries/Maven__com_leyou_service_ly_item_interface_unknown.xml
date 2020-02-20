@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.leyou.service:ly-item-interface:unknown">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/leyou/service/ly-item-interface/unknown/ly-item-interface-unknown.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/leyou/service/ly-item-interface/unknown/ly-item-interface-unknown-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/leyou/service/ly-item-interface/unknown/ly-item-interface-unknown-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

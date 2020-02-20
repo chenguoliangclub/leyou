@@ -4,6 +4,8 @@ spring:
     name: ly-page
   thymeleaf:
     cache: false
+  rabbitmq:
+    host: 192.168.233.128
 server:
   port: 8084
 eureka:

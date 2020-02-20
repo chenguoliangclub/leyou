@@ -18,11 +18,11 @@ public class GoodsController {
     @GetMapping("/spu/page")
     public ResponseEntity<PageResult<Spu>> querySpuByPage(
             @RequestParam(value = "page",defaultValue = "1") Integer page,
-            @RequestParam(value = "row",defaultValue = "5") Integer row,
+            @RequestParam(value = "rows",defaultValue = "5") Integer rows,
             @RequestParam(value = "saleable",defaultValue = "1") boolean saleable,
             @RequestParam(value = "key",required = false) String key
     ){
-        PageResult<Spu> pageResult =goodsService.querySpuByPage(page,row,saleable,key);
+        PageResult<Spu> pageResult =goodsService.querySpuByPage(page,rows,saleable,key);
 //        return ResponseEntity.ok(goodsService.querySpuByPage(page,row,saleable,key));
         return ResponseEntity.ok(pageResult);
     }
@@ -35,6 +35,11 @@ public class GoodsController {
     @GetMapping("/sku/list")
     public ResponseEntity<List<Sku>> querySkuBySpuId(@RequestParam("id") Long id) {
         return ResponseEntity.ok(goodsService.querySkuBySpuId(id));
+    }
+
+    @GetMapping("/sku/list/{ids}")
+    public ResponseEntity<List<Sku>> querySkuByIds(@RequestParam("ids") List<Long> ids) {
+        return ResponseEntity.ok(goodsService.querySkuByIds(ids));
     }
 
     @GetMapping("/spu/{id}")

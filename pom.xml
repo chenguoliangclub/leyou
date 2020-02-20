@@ -13,6 +13,10 @@
         <module>ly-item</module>
         <module>ly-common</module>
         <module>ly-upload</module>
+        <module>ly-service-page</module>
+        <module>ly-user</module>
+        <module>ly-auth</module>
+        <module>ly-cart</module>
     </modules>
     <packaging>pom</packaging>
     <parent>

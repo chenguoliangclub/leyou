@@ -25,4 +25,7 @@ public interface GoodsApi {
 
     @GetMapping("/sku/list")
     public List<Sku> querySkuBySpuId(@RequestParam("id") Long id);
+
+    @GetMapping("/spu/{id}")
+    public Spu querySpuById(@PathVariable("id") Long id);
 }

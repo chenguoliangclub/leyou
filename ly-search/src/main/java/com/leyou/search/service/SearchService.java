@@ -125,7 +125,7 @@ public class SearchService {
 
     public PageResult<Goods> search(SearchRequest request){
         String key = request.getKey();
-        int page = request.getPage() - 1;
+        int page = request.getPage();
         System.out.println("page: " + page);
         int size = request.getSize();
         System.out.println("size: " + size);

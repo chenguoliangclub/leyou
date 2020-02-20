@@ -48,10 +48,10 @@ public class GoodsService {
         //默认排序
         example.setOrderByClause("last_update_time DESC");
         //分页
-        PageHelper.startPage(1,5);
+        PageHelper.startPage(page,row);
         //查询
         List<Spu> list = this.spuMapper.selectByExample(example);
-        PageInfo<Spu> info = new PageInfo<Spu>(list,5);
+        PageInfo<Spu> info = new PageInfo<Spu>(list);
         //判断
         if(CollectionUtils.isEmpty(list)){
             throw  new LyException(ExceptionEnum.GOODS_NOT_FOUND);
@@ -101,5 +101,17 @@ public class GoodsService {
             throw new LyException(ExceptionEnum.GOODS_NOT_FOUND);
         }
         return spu;
+    }
+
+    public List<Sku> querySkuByIds(List<Long> ids) {
+        List<Sku> skus = skuMapper.selectByIdList(ids);
+        if (CollectionUtils.isEmpty(skus)){
+            throw new LyException(ExceptionEnum.SKU_NOT_FOUND);
+        }
+        for (Sku sku : skus) {
+            // 同时查询出库存
+            sku.setStock(this.stockMapper.selectByPrimaryKey(sku.getId()).getStock());
+        }
+        return skus;
     }
 }

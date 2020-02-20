@@ -38,7 +38,7 @@ public class SpecificationService {
         param.setGeneric(generic);
         List<SpecParam> specParams = this.specParamMapper.select(param);
         if(CollectionUtils.isEmpty(specParams)){
-            throw new LyException(ExceptionEnum.SPEC_GROUP_NOT_FOUND);
+            throw new LyException(ExceptionEnum.SPEC_PARAMS_NOT_FOUND);
         }
         return specParams;
     }
@@ -51,5 +51,15 @@ public class SpecificationService {
                 }
         );
         return Specification;
+    }
+
+    public List<SpecParam> querySpecParamsByGid(Long gid) {
+        SpecParam param = new SpecParam();
+        param.setGroupId(gid);
+        List<SpecParam> specParams = this.specParamMapper.select(param);
+        if(CollectionUtils.isEmpty(specParams)){
+            throw new LyException(ExceptionEnum.SPEC_PARAMS_NOT_FOUND);
+        }
+        return specParams;
     }
 }

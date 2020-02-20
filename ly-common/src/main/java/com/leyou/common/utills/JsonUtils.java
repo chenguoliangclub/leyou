@@ -3,6 +3,9 @@ package com.leyou.common.utills;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.leyou.common.enums.ExceptionEnum;
+import com.leyou.common.vo.ExceptionResult;
+import com.leyou.common.vo.PageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +39,9 @@ public class JsonUtils {
             return null;
         }
     }
-
+    class User{
+        String id;String name;
+    }
     @Nullable
     public static <T> T parse(String json, Class<T> tClass) {
         try {
@@ -76,4 +81,5 @@ public class JsonUtils {
             return null;
         }
     }
+
 }

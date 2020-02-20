@@ -14,4 +14,5 @@ public class CommonExceptionHandler {
         return ResponseEntity.status(e.getExceptionEnum().getCode())
                 .body(new ExceptionResult(e.getExceptionEnum()));
     }
+
 }

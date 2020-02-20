@@ -11,10 +11,16 @@ zuul:
   prefix: /api
   routes:
     item-service: /item/**
+    search-service: /search/**
+    user-service: /user/**
+    auth-service: /auth/**
+    cart-service: /cart/**
     upload-service:
       path: /upload/**
       serviceId: upload-service
-      strip-prefix: false
+      strip-prefix: false   #不去掉前缀，防止/upload被去掉
+  add-host-header: true
+  sensitive-headers:
 hystrix:
   commend:
     default:
@@ -27,3 +33,16 @@ ribbon:
   ReadTimeout: 3500 #ribbon读取超时时长
   MaxAutoRetries: 0 #当前服务重试次数
   MaxAutoRetriesNextServer: 0 # 切换服务重试次数
+ly:
+  jwt:
+    pubKeyPath: G:/key/rsa/rsa.pub # 公钥地址
+    expire: 30 # 过期时间,单位分钟
+    cookieName: "LY_TOKEN"
+  filter:
+    allowPaths:
+      - /api/auth
+      - /api/search
+      - /api/user/register
+      - /api/user/check
+      - /api/user/code
+      - /api/item

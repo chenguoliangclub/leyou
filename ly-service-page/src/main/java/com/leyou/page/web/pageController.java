@@ -23,6 +23,6 @@ public class pageController {
     @RequestMapping("item/{spuId}.html")
     public String getPage(@PathVariable Long spuId, Model model){
         model.addAllAttributes(pageService.loadModel(spuId));
-        return "item";
+        return spuId + "item";
     }
 }

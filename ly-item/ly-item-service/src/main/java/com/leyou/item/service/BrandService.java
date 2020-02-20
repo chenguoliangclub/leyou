@@ -10,6 +10,7 @@ import com.leyou.item.pojo.Brand;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
@@ -21,8 +22,7 @@ public class BrandService {
     private BrandMapper brandMapper;
 
     public PageResult<Brand> queryBrandByPage(Integer page,Integer rows,String sortBy,Boolean desc,String key){
-        //分页
-        PageHelper.startPage(page,rows);
+
         //过滤
         Example example = new Example(Brand.class);
         if(!StringUtils.isBlank(key)){
@@ -32,12 +32,14 @@ public class BrandService {
         if(!StringUtils.isBlank(sortBy)){
             example.setOrderByClause(sortBy + (desc?" DESC":" ASC"));
         }
+        //分页
+        PageHelper.startPage(page,rows);
         List<Brand> list = brandMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(list)){
             throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
         }
         //解析分页结果
-        PageInfo<Brand> info = new PageInfo<>(list);
+        PageInfo<Brand> info = new PageInfo<Brand>(list);
         return new PageResult<Brand>(info.getTotal(),list);
     }
 
@@ -55,5 +57,21 @@ public class BrandService {
             throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
         }
         return brand;
+    }
+
+    @Transactional
+    public void insertBrand(Brand brand, List<Long> cids) {
+        //向品牌表插入数据
+        int insert = brandMapper.insert(brand);
+        if (insert != 1){
+            throw new LyException(ExceptionEnum.CREATE_BRAND_ERROR);
+        }
+        //向品牌分类表插入数据
+        cids.forEach(cid->{
+            int i = brandMapper.insertBrandCategory(cid, brand.getId());
+            if (i != 1){
+                throw new LyException(ExceptionEnum.CREATE_BRAND_ERROR);
+            }
+        });
     }
 }

@@ -31,6 +31,11 @@ public class SpecificationController {
         return ResponseEntity.ok(specificationService.querySpecParams(gid, cid, searching, generic));
     }
 
+    @GetMapping("/params/gid/{gid}")
+    public ResponseEntity<List<SpecParam>> querySpecParamByGid(@PathVariable(value="gid") Long gid){
+        return ResponseEntity.ok(specificationService.querySpecParamsByGid(gid));
+    }
+
     // 查询规格参数组，及组内参数
     @GetMapping("{cid}")
     public ResponseEntity<List<SpecGroup>> querySpecsByCid(@PathVariable("cid") Long cid){
